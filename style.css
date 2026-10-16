@@ -298,3 +298,39 @@ button { font: inherit; }
   .choices { grid-template-columns: 1fr; gap: 6px; }
   .hero { padding: 22px; }
 }
+
+/* ---------- science layer ---------- */
+.labcard {
+  position: absolute; z-index: 4; left: 4%; right: 4%; top: 4%; bottom: 27%;
+  background: var(--white); border-radius: 18px; box-shadow: 0 20px 44px -22px rgba(0,0,0,.55);
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 3%; padding: 2.4%; align-items: center; overflow: auto;
+}
+.lab-fig { min-width: 0; }
+.lab-fig svg.diagram { width: 100%; height: auto; display: block; max-height: 100%; }
+.lab-text { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.lab-text h2 { font-size: clamp(16px, 2.3vw, 26px); }
+.lab-text p:last-child { font-size: clamp(12.5px, 1.5vw, 16.5px); color: var(--ink-soft); }
+.choices.compact { bottom: 4%; }
+.choices.compact .choice { padding: 1.6% 3%; font-size: clamp(12px, 1.7vw, 19px); }
+.card-overlay.wide { width: min(92%, 860px); }
+.concept { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 18px; align-items: center; }
+.concept .lead { font-size: clamp(12.5px, 1.45vw, 15.5px); line-height: 1.55; }
+.readouts {
+  position: absolute; z-index: 4; right: 2.5%; top: 4%; width: clamp(150px, 24%, 230px);
+  background: rgba(255,255,255,.94); border-radius: 14px; padding: 12px 14px; display: grid; gap: 6px;
+  box-shadow: 0 10px 24px -14px rgba(0,0,0,.5);
+}
+.readouts .rd { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: clamp(11.5px, 1.3vw, 14px); color: var(--ink-soft); }
+.readouts .rd b { font: 800 clamp(14px, 1.9vw, 21px) var(--font-display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.readouts .target { font-weight: 700; font-size: clamp(11.5px, 1.3vw, 14px); color: var(--sea); }
+.readouts .sway span { font-size: 13px; color: var(--ink-soft); }
+.readouts .note { font-size: 11.5px; }
+.readouts .bar.hold { height: 7px; }
+.slider { display: grid; gap: 4px; width: 100%; font-size: 14px; font-weight: 600; }
+.slider input { width: 100%; accent-color: var(--sea); }
+.formulas li { font-variant-numeric: tabular-nums; }
+@media (max-width: 700px) {
+  .labcard { grid-template-columns: minmax(0, 1fr); bottom: 30%; }
+  .labcard .lab-text p:last-child { display: none; }
+  .concept { grid-template-columns: minmax(0, 1fr); }
+}

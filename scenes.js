@@ -222,3 +222,96 @@
 
   window.SCENES = { village, rumoh, classroom, climb, climbPoint, partShape, RUMOH, ICON };
 })();
+
+// ---------- Lab-card diagrams (science content) ----------
+(function () {
+  const F = 'font-family="Figtree, sans-serif"';
+  const txt = (x, y, s, o = "") => `<text x="${x}" y="${y}" ${F} font-size="15" fill="#1d2a3a" ${o}>${s}</text>`;
+
+  // P (longitudinal) vs S (transverse) waves
+  function waves(l) {
+    let lines = "";
+    for (let i = 0; i < 34; i++) {
+      const x = 30 + i * 13 + 6 * Math.sin(i / 2.2);
+      lines += `<line x1="${x.toFixed(1)}" y1="44" x2="${x.toFixed(1)}" y2="92" stroke="#1f6fa8" stroke-width="3"/>`;
+    }
+    let sine = "M30 175";
+    for (let x = 30; x <= 470; x += 5) sine += ` L${x} ${(175 - 26 * Math.sin((x - 30) / 30)).toFixed(1)}`;
+    return `<svg viewBox="0 0 500 230" class="diagram">
+      ${txt(30, 28, `<tspan font-weight="700">${l.p}</tspan>`)}${lines}
+      <path d="M380 108 h70 m-10 -7 l10 7 -10 7" stroke="#8a5a2b" stroke-width="3" fill="none"/><path d="M60 108 h40 m-34 -6 l-6 6 6 6 m28 -12 l6 6 -6 6" stroke="#c2433c" stroke-width="2.5" fill="none"/>
+      ${txt(108, 113, l.pMove, 'font-size="13" fill="#c2433c"')}
+      ${txt(30, 140, `<tspan font-weight="700">${l.s}</tspan>`)}
+      <path d="${sine}" stroke="#1f6fa8" stroke-width="3.5" fill="none"/>
+      <path d="M380 218 h70 m-10 -7 l10 7 -10 7" stroke="#8a5a2b" stroke-width="3" fill="none"/>
+      <path d="M78 158 v34 m-6 -28 l6 -6 6 6 m-12 22 l6 6 6 -6" stroke="#c2433c" stroke-width="2.5" fill="none"/>
+      ${txt(92, 222, l.sMove, 'font-size="13" fill="#c2433c"')}${txt(300, 222, l.dir, 'font-size="13" fill="#8a5a2b"')}
+    </svg>`;
+  }
+
+  // seismogram: P at 5 s, S at 15 s
+  function seismogram(l) {
+    const X = s => 40 + s * 14.5;
+    let d = "M40 120";
+    for (let s = 0; s <= 30; s += 0.1) {
+      let a = 1.5 * Math.sin(s * 40);
+      if (s >= 5) a += 14 * Math.exp(-(s - 5) * 0.35) * Math.sin(s * 23);
+      if (s >= 15) a += 48 * Math.exp(-(s - 15) * 0.22) * Math.sin(s * 13);
+      d += ` L${X(s).toFixed(1)} ${(120 - a).toFixed(1)}`;
+    }
+    const ticks = [0, 5, 10, 15, 20, 25, 30].map(s => `<line x1="${X(s)}" y1="190" x2="${X(s)}" y2="196" stroke="#4a5768"/>${txt(X(s) - 6, 214, s, 'font-size="13"')}`).join("");
+    return `<svg viewBox="0 0 500 230" class="diagram">
+      <rect x="40" y="40" width="435" height="150" fill="#fbf8f2" stroke="#d9ccb4"/>
+      <path d="${d}" stroke="#1d2a3a" stroke-width="1.6" fill="none"/>
+      <line x1="${X(5)}" y1="36" x2="${X(5)}" y2="190" stroke="#1f6fa8" stroke-width="2" stroke-dasharray="5 4"/>
+      <line x1="${X(15)}" y1="36" x2="${X(15)}" y2="190" stroke="#c2433c" stroke-width="2" stroke-dasharray="5 4"/>
+      ${txt(X(5) + 5, 30, `<tspan font-weight="700" fill="#1f6fa8">P</tspan> = 5 s`)}${txt(X(15) + 5, 30, `<tspan font-weight="700" fill="#c2433c">S</tspan> = 15 s`)}
+      <line x1="40" y1="190" x2="475" y2="190" stroke="#4a5768"/>${ticks}${txt(420, 228, l.time, 'font-size="12" fill="#4a5768"')}
+    </svg>`;
+  }
+
+  // ocean cross-section for v = sqrt(g d)
+  function ocean(l) {
+    return `<svg viewBox="0 0 500 230" class="diagram">
+      <rect x="0" y="70" width="500" height="160" fill="#cfe6f4"/>
+      <path d="M0 230 L0 215 L300 210 Q 380 205 430 120 L 470 80 L500 70 L500 230Z" fill="#cdb98a"/>
+      <path d="M0 70 Q 40 62 80 70 Q 120 78 160 70" stroke="#1f6fa8" stroke-width="3" fill="none"/>
+      <path d="M380 70 Q 410 30 440 70" fill="#1f6fa8" opacity=".85"/>
+      <line x1="120" y1="72" x2="120" y2="210" stroke="#1d2a3a" stroke-dasharray="5 4"/>${txt(128, 112, l.deep, 'font-size="13" font-weight="700"')}
+      <line x1="448" y1="72" x2="448" y2="96" stroke="#1d2a3a" stroke-dasharray="3 3"/>${txt(330, 112, l.shallow, 'font-size="13" font-weight="700"')}
+      ${txt(10, 56, l.small, 'font-size="13"')}${txt(300, 24, l.tall, 'font-size="13"')}
+      <rect x="150" y="146" width="150" height="40" rx="8" fill="#fff" stroke="#8a5a2b"/>${txt(166, 172, "v = √(g · d)", 'font-size="18" font-weight="700" fill="#8a5a2b"')}
+    </svg>`;
+  }
+
+  // 3 full cycles in 2 s
+  function vibGraph(l) {
+    const X = s => 50 + s * 210, Y = v => 115 - v * 70;
+    let d = `M${X(0)} ${Y(0)}`;
+    for (let s = 0; s <= 2; s += 0.01) d += ` L${X(s).toFixed(1)} ${Y(Math.sin(2 * Math.PI * 1.5 * s)).toFixed(1)}`;
+    const ticks = [0, 0.5, 1, 1.5, 2].map(s => `<line x1="${X(s)}" y1="40" x2="${X(s)}" y2="190" stroke="#e3d3b6"/>${txt(X(s) - 8, 212, s, 'font-size="13"')}`).join("");
+    return `<svg viewBox="0 0 500 230" class="diagram">${ticks}
+      <line x1="${X(0)}" y1="115" x2="${X(2)}" y2="115" stroke="#4a5768"/>
+      <path d="${d}" stroke="#1f6fa8" stroke-width="3.5" fill="none"/>
+      <line x1="30" y1="${Y(1)}" x2="30" y2="115" stroke="#c2433c" stroke-width="2"/>${txt(6, 80, "A", 'font-weight="700" fill="#c2433c"')}
+      ${txt(400, 228, l.time, 'font-size="12" fill="#4a5768"')}
+    </svg>`;
+  }
+
+  // evacuation route map
+  function routeMap(l) {
+    return `<svg viewBox="0 0 500 230" class="diagram">
+      <rect width="500" height="230" fill="#e9f2df"/>
+      <path d="M0 190 Q 120 180 250 196 T 500 188 L500 230 L0 230Z" fill="#7fb3d8"/>${txt(20, 222, l.coast, 'font-size="13" fill="#fff" font-weight="700"')}
+      <ellipse cx="120" cy="50" rx="80" ry="38" fill="#6fae63"/><ellipse cx="120" cy="50" rx="45" ry="20" fill="#4f8f4a"/>${txt(80, 22, l.hillA, 'font-size="13" font-weight="700"')}
+      <ellipse cx="440" cy="48" rx="70" ry="34" fill="#6fae63"/><ellipse cx="440" cy="48" rx="38" ry="17" fill="#4f8f4a"/>${txt(398, 22, l.hillB, 'font-size="13" font-weight="700"')}
+      <rect x="215" y="140" width="46" height="30" fill="#fff" stroke="#c2433c" stroke-width="3"/>${txt(205, 186, l.school, 'font-size="13" font-weight="700"')}
+      <path d="M215 150 Q 170 120 150 80" stroke="#1f6fa8" stroke-width="5" fill="none" stroke-dasharray="2 8" stroke-linecap="round"/>
+      <path d="M261 155 Q 340 160 380 120 Q 420 90 425 70" stroke="#8a5a2b" stroke-width="5" fill="none" stroke-dasharray="2 8" stroke-linecap="round"/>
+      <rect x="100" y="104" width="94" height="24" rx="6" fill="#1f6fa8"/>${txt(108, 121, "A · 900 m", 'font-size="14" font-weight="700" fill="#fff"')}
+      <rect x="318" y="164" width="104" height="24" rx="6" fill="#8a5a2b"/>${txt(326, 181, "B · 2.4 km", 'font-size="14" font-weight="700" fill="#fff"')}
+    </svg>`;
+  }
+
+  Object.assign(window.SCENES, { waves, seismogram, ocean, vibGraph, routeMap });
+})();
