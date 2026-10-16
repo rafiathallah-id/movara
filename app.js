@@ -167,13 +167,13 @@
   }
   async function ensureModel(name) {
     if (name === "pose" && !pose) {
-      pose = new window.Pose({ locateFile: f => `lib/pose/${f}` });
+      pose = new window.Pose({ locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/${f}` });
       pose.setOptions({ modelComplexity: 0, smoothLandmarks: true, enableSegmentation: false, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
       pose.onResults(onPoseResults);
       await pose.initialize(); ready.pose = true;
     }
     if (name === "hands" && !hands) {
-      hands = new window.Hands({ locateFile: f => `lib/hands/${f}` });
+      hands = new window.Hands({ locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/${f}` });
       hands.setOptions({ maxNumHands: 2, modelComplexity: 0, minDetectionConfidence: 0.6, minTrackingConfidence: 0.5 });
       hands.onResults(onHandsResults);
       await hands.initialize(); ready.hands = true;
