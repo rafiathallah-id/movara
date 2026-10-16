@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOVARA Virtual Lab</title>
+<meta name="description" content="MOVARA: a webcam-based virtual lab where junior high school students practise Acehnese disaster wisdom (smong and Rumoh Aceh) with their own body movements.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d2a3a'/%3E%3Cpath d='M12 30 32 14l20 16' fill='none' stroke='%23e9b872' stroke-width='5' stroke-linejoin='round'/%3E%3Cpath d='M20 30v14M32 30v14M44 30v14' stroke='%23e9b872' stroke-width='4'/%3E%3Cpath d='M8 52c6-5 10-5 16 0s10 5 16 0 10-5 16 0' fill='none' stroke='%2369b3e0' stroke-width='4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 30 32 14l20 16" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M20 30v14M32 30v14M44 30v14" stroke="currentColor" stroke-width="4"/><path d="M8 52c6-5 10-5 16 0s10 5 16 0 10-5 16 0" fill="none" stroke="var(--sea-light)" stroke-width="4"/></svg>
+    <span>MOVARA</span>
+  </div>
+  <ol class="stepper" id="stepper" aria-label="Progress"></ol>
+  <div class="tools">
+    <button class="tool" id="btn-lang" type="button" aria-label="Change language">ID</button>
+    <button class="tool" id="btn-sound" type="button" aria-pressed="true" aria-label="Narration on/off">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path id="sound-waves" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <button class="tool" id="btn-about" type="button" data-i18n="about">About</button>
+  </div>
+</header>
+
+<main id="app" class="app">
+  <section class="stage" aria-live="polite">
+    <div class="scene" id="scene"></div>
+  </section>
+
+  <aside class="side" id="side">
+    <div class="cam" id="cam">
+      <video id="video" playsinline muted></video>
+      <canvas id="overlay"></canvas>
+      <div class="cam-status" id="cam-status"></div>
+      <div class="cam-mouse" id="cam-mouse" hidden>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="13" y="6" width="22" height="36" rx="11" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 6v12" stroke="currentColor" stroke-width="3"/></svg>
+        <p data-i18n="mouseModeOn">Mouse &amp; keyboard mode</p>
+      </div>
+    </div>
+    <div class="instr" id="instr">
+      <div class="instr-icon" id="instr-icon"></div>
+      <div>
+        <p class="eyebrow" id="instr-eyebrow"></p>
+        <h2 id="instr-title"></h2>
+        <p id="instr-text"></p>
+      </div>
+    </div>
+    <div class="controls" id="controls"></div>
+    <div class="feedback" id="feedback" role="status" hidden></div>
+    <div class="progress">
+      <div class="progress-label"><span id="prog-label"></span><span id="prog-value"></span></div>
+      <div class="bar"><div class="bar-fill" id="prog-fill"></div></div>
+    </div>
+  </aside>
+</main>
+
+<div class="modal" id="about" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="about-title">
+    <h2 id="about-title">MOVARA</h2>
+    <div id="about-body"></div>
+    <button class="btn primary" id="about-close" type="button" data-i18n="close">Close</button>
+  </div>
+</div>
+
+<script src="lib/pose/pose.js"></script>
+<script src="lib/hands/hands.js"></script>
+<script src="i18n.js"></script>
+<script src="scenes.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
